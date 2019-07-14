@@ -131,7 +131,7 @@ public class GamePathChooser extends AbstractTitledComponentFrame {
     }
 
     private boolean isValidGamePath(String gamePath) {
-        File file = new File(gamePath + File.separator + "logs" + File.separator + "Client.txt");
+        File file = new File(gamePath + File.separator + "logs" + File.separator + "KakakoClient.txt");
         return file.exists();
     }
 

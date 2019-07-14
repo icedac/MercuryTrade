@@ -52,7 +52,7 @@ public class AppMain {
     }
 
     private static boolean isValidGamePath(String gamePath) {
-        File file = new File(gamePath + File.separator + "logs" + File.separator + "Client.txt");
+        File file = new File(gamePath + File.separator + "logs" + File.separator + "KakaoClient.txt");
         return file.exists();
     }
 

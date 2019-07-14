@@ -34,7 +34,7 @@ public class FileMonitor {
         String gamePath = Configuration.get().applicationConfiguration().get().getGamePath();
 
         File folder = new File(gamePath + "logs");
-        this.fileHandler = new MessageFileHandler(gamePath + "logs/Client.txt");
+        this.fileHandler = new MessageFileHandler(gamePath + "logs/KakaoClient.txt");
         FileAlterationObserver observer = new FileAlterationObserver(folder);
         monitor = new FileAlterationMonitor(POLLING_INTERVAL);
         FileAlterationListener listener = new FileAlterationListenerAdaptor() {
