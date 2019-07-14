@@ -23,6 +23,15 @@ public class DataTransformers {
         return obs -> obs.map(soundType -> {
             SoundDescriptor descriptor = new SoundDescriptor();
             switch (soundType) {
+                case VALUABLE_MESSAGE: {
+                    SoundDescriptor desc = soundService.get("valuable_notification");
+                    WhisperNotifierStatus status = Configuration.get().applicationConfiguration().get().getNotifierStatus();
+                    if (status == WhisperNotifierStatus.ALWAYS ||
+                            ((status == WhisperNotifierStatus.ALTAB) && (ProdStarter.APP_STATUS == FrameVisibleState.HIDE))) {
+                        return desc;
+                    }
+                    return new SoundDescriptor(desc.getWavPath(), -80f);
+                }
                 case MESSAGE: {
                     SoundDescriptor desc = soundService.get("notification");
                     WhisperNotifierStatus status = Configuration.get().applicationConfiguration().get().getNotifierStatus();

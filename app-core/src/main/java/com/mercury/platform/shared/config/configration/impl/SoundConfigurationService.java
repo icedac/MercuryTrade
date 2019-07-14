@@ -44,6 +44,8 @@ public class SoundConfigurationService extends BaseConfigurationService<Map<Stri
     @Override
     public Map<String, SoundDescriptor> getDefault() {
         Map<String, SoundDescriptor> defaultSettings = new HashMap<>();
+        
+        defaultSettings.put("valuable_notification", new SoundDescriptor("app/valuable_notification.wav", 0f));
         defaultSettings.put("notification", new SoundDescriptor("app/notification.wav", 0f));
         defaultSettings.put("chat_scanner", new SoundDescriptor("app/chat-filter.wav", 0f));
         defaultSettings.put("clicks", new SoundDescriptor("default", 0f));

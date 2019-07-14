@@ -21,6 +21,7 @@ public class SoundSettingsPagePanel extends SettingsPagePanel {
     private Map<String, String> wavPaths;
 
     private JSlider notificationSlider;
+    private JSlider valuableNotificationSlider;
     private JSlider chatScannerSlider;
     private JSlider clicksSlider;
     private JSlider updateSlider;
@@ -33,6 +34,7 @@ public class SoundSettingsPagePanel extends SettingsPagePanel {
         super.onViewInit();
         this.wavPaths = new HashMap<>();
         this.wavPaths.put("notification", "app/notification.wav");
+        this.wavPaths.put("valuable_notification", "app/valuable_notification.wav");
         this.wavPaths.put("chat_scanner", "app/chat-filter.wav");
         this.wavPaths.put("clicks", "app/sounds/click1/button-pressed-10.wav");
         this.wavPaths.put("update", "app/patch_tone.wav");
@@ -62,6 +64,17 @@ public class SoundSettingsPagePanel extends SettingsPagePanel {
                 ));
             }
         });
+        valuableNotificationSlider = componentsFactory.getSlider(-40, 6, soundSnapshot.get("valuable_notification").getDb().intValue(), AppThemeColor.ADR_BG);
+        valuableNotificationSlider.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                MercuryStoreCore.soundSettingsSubject.onNext(new SoundDescriptor(
+                        wavPaths.get("valuable_notification"),
+                        valuableNotificationSlider.getValue() == -40 ? -80f : (float) valuableNotificationSlider.getValue()
+                ));
+            }
+        });
+        
         chatScannerSlider = componentsFactory.getSlider(-40, 6, soundSnapshot.get("chat_scanner").getDb().intValue(), AppThemeColor.ADR_BG);
         chatScannerSlider.addMouseListener(new MouseAdapter() {
             @Override
@@ -94,6 +107,8 @@ public class SoundSettingsPagePanel extends SettingsPagePanel {
         });
         container.add(componentsFactory.getTextLabel("Notification:", FontStyle.REGULAR, 16));
         container.add(notificationSlider);
+        container.add(componentsFactory.getTextLabel("Valuable Notification:", FontStyle.REGULAR, 16));
+        container.add(valuableNotificationSlider);
         container.add(componentsFactory.getTextLabel("Chat Scanner", FontStyle.REGULAR, 16));
         container.add(chatScannerSlider);
         container.add(componentsFactory.getTextLabel("Clicks", FontStyle.REGULAR, 16));
@@ -107,6 +122,8 @@ public class SoundSettingsPagePanel extends SettingsPagePanel {
     public void onSave() {
         soundSnapshot.get("notification")
                 .setDb((float) notificationSlider.getValue());
+        soundSnapshot.get("valuable_notification")
+                .setDb((float) valuableNotificationSlider.getValue());
         soundSnapshot.get("chat_scanner")
                 .setDb((float) chatScannerSlider.getValue());
         soundSnapshot.get("clicks")

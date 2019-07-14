@@ -20,7 +20,7 @@ import com.mercury.platform.ui.components.panel.notification.factory.Notificatio
 import com.mercury.platform.ui.frame.titled.TestEngine;
 import com.mercury.platform.ui.misc.AppThemeColor;
 import com.mercury.platform.ui.misc.MercuryStoreUI;
-
+import com.mercury.platform.shared.entity.message.TradeNotificationDescriptor;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -103,15 +103,24 @@ public class NotificationFrame extends AbstractMovableComponentFrame {
         });
         MercuryStoreCore.newNotificationSubject.subscribe(notification -> {
             SwingUtilities.invokeLater(() -> {
+
                 NotificationPanel notificationPanel = this.providersFactory.getProviderFor(notification.getType())
                         .setData(notification)
                         .setComponentsFactory(this.componentsFactory)
                         .build();
+                
                 if (preProcessor.isDuplicate(notification)) {
                     notificationPanel.setDuplicate(true);
                 }
                 if (this.preProcessor.isAllowed(notification)) {
-                    MercuryStoreCore.soundSubject.onNext(SoundType.MESSAGE);
+                    // decide just MESSAGE or VALUABLE_MESSAGE
+                    if (notification instanceof TradeNotificationDescriptor && 
+                    ((TradeNotificationDescriptor)notification).Valuable() ) {
+                        MercuryStoreCore.soundSubject.onNext(SoundType.VALUABLE_MESSAGE);
+                    }
+                    else
+                        MercuryStoreCore.soundSubject.onNext(SoundType.MESSAGE);
+
                     this.addNotification(notificationPanel);
                 }
             });
