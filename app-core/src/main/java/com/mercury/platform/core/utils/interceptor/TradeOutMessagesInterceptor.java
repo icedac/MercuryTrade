@@ -22,6 +22,7 @@ public class TradeOutMessagesInterceptor extends MessageInterceptor {
     public TradeOutMessagesInterceptor() {
         this.config = Configuration.get().notificationConfiguration();
         this.clients.add(new EngOutLocalizationMatcher());
+        this.clients.add(new KoreanOutLocalizationMatcher());
         this.clients.add(new RuOutLocalizationMatcher());
         this.clients.add(new ArabicOutLocalizationMatcher());
         this.clients.add(new BZOutLocalizationMatcher());
@@ -79,6 +80,30 @@ public class TradeOutMessagesInterceptor extends MessageInterceptor {
         @Override
         public String trimString(String src) {
             return StringUtils.substringAfter(src, "@To");
+        }
+
+        @Override
+        public NotificationDescriptor getDescriptor(String message) {
+            NotificationDescriptor descriptor = messageParser.parse(this.trimString(message));
+            if (descriptor instanceof ItemTradeNotificationDescriptor) {
+                descriptor.setType(NotificationType.OUT_ITEM_MESSAGE);
+            } else {
+                descriptor.setType(NotificationType.OUT_CURRENCY_MESSAGE);
+            }
+            return descriptor;
+        }
+    }
+
+    
+    private class KoreanOutLocalizationMatcher extends LocalizationMatcher {
+        @Override
+        public boolean isSuitableFor(String message) {
+            return message.contains("@발신") && super.isSuitableFor(message);
+        }
+
+        @Override
+        public String trimString(String src) {
+            return StringUtils.substringAfter(src, "@발신");
         }
 
         @Override

@@ -20,6 +20,7 @@ public class TradeIncMessagesInterceptor extends MessageInterceptor {
     public TradeIncMessagesInterceptor() {
         this.config = Configuration.get().notificationConfiguration();
         this.clients.add(new EngIncLocalizationMatcher());
+        this.clients.add(new KoreanIncLocalizationMatcher());
         this.clients.add(new RuIncLocalizationMatcher());
         this.clients.add(new ArabicInLocalizationMatcher());
         this.clients.add(new BZIncLocalizationMatcher());
@@ -77,6 +78,18 @@ public class TradeIncMessagesInterceptor extends MessageInterceptor {
         @Override
         public String trimString(String src) {
             return StringUtils.substringAfter(src, "@From");
+        }
+    }
+
+    private class KoreanIncLocalizationMatcher extends LocalizationMatcher {
+        @Override
+        public boolean isSuitableFor(String message) {
+            return message.contains("@수신") && super.isSuitableFor(message);
+        }
+
+        @Override
+        public String trimString(String src) {
+            return StringUtils.substringAfter(src, "@수신");
         }
     }
 
