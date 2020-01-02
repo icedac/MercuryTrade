@@ -73,7 +73,11 @@ public class MessageFileHandler implements AsSubscriber {
                 .collect(Collectors.toList());
 
         List<String> resultMessages = filteredMessages.stream().filter(message -> {
-            if (message.contains("2017") || message.contains("2018") || message.contains("2019")) { //todo
+            if (
+            		message.contains("2017") || message.contains("2018") || message.contains("2019")
+            		|| message.contains("2020") || message.contains("2021") || message.contains("2022")
+            		|| message.contains("2023") || message.contains("2024") || message.contains("2025")
+            	) { //todo
                 Date date = new Date(StringUtils.substring(message, 0, 20));
                 return date.after(lastMessageDate);
             } else {
